@@ -7,6 +7,7 @@ public class Memory {
         int length; //number of characters in the string
         public void StringInter(int id, int start, int length) {
         //hello
+            //testingTESTING
         }
 
     }
