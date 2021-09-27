@@ -4,37 +4,41 @@ public class Memory {
     LinkedList<StringInterval> intervalList = new LinkedList<StringInterval>();
     char[] memoryArray;
     static int idCount = 0;
-    static int start = 0;
+    int start = 0;
 
     //Sets length of the character array
     //DONE
     public Memory(int length) {
         memoryArray = new char[length];
         idCount = 0;
+        //start = 0;
     }
 
-    public String getString(int id) {
+    public String getString(int id) { //get(String)
+        //initialize variables
         String WORD = null;
         char[] arr;
+
         //Iteration through linked list to find the id
         for (StringInterval A: intervalList) {
+            int a = A.get_Id();
+            //verify id number and store string into WORD
             if (A.get_Id() == id) {
                 arr = new char[A.get_length()];
                 for (int i = 0; i < A.get_length(); i++) {
-                    arr[i] = memoryArray [i + A.get_start()];
+                    arr[i] = memoryArray[i + A.get_start()];
                 }
                 WORD = String.valueOf(arr);
             }
-            break;
 
         }
         return WORD;
     }
-    /*
-    public getId(String s) {
+
+    public int getId(String s) {
 
     }
-
+    /*
     public getLength(int length) {
 
     }
@@ -51,10 +55,13 @@ public class Memory {
         idCount ++; //increment id for each string added
         StringInterval newString = new StringInterval(); //creating object for StringInterval
 
-        newString.StringInter(start, idCount, stringInput.length()); //using constructor to give values to object
+        newString.StringInter(idCount, start, stringInput.length()); //using constructor to give values to object
         //TODO
         //WRITE DEFRAGMENT FUNCTION WHICH REMOVES GAPS IN LINKEDLIST
         for (int i = start; i < memoryArray.length; i++) {
+            if (i >= stringInput.length() + start) {
+                break;
+            }
             memoryArray[i] = stringInput.charAt(i - start);
         }
 
@@ -79,9 +86,8 @@ public class Memory {
             this.id = id;
             this.start = start;
             this.length = length;
-        //hello
-            //testingTESTING
         }
+        //helper methods
         public int get_Id() {
             return id;
         }
