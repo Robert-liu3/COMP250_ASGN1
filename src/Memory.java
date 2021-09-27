@@ -6,15 +6,31 @@ public class Memory {
     static int idCount = 0;
     static int start = 0;
 
+    //Sets length of the character array
+    //DONE
     public Memory(int length) {
         memoryArray = new char[length];
         idCount = 0;
     }
-    /*
-    public getString(int id) {
 
+    public String getString(int id) {
+        String WORD = null;
+        char[] arr;
+        //Iteration through linked list to find the id
+        for (StringInterval A: intervalList) {
+            if (A.get_Id() == id) {
+                arr = new char[A.get_length()];
+                for (int i = 0; i < A.get_length(); i++) {
+                    arr[i] = memoryArray [i + A.get_start()];
+                }
+                WORD = String.valueOf(arr);
+            }
+            break;
+
+        }
+        return WORD;
     }
-
+    /*
     public getId(String s) {
 
     }
@@ -31,12 +47,13 @@ public class Memory {
 
     }
     */
-    public put(String stringInput) {
+    public int put(String stringInput) {
         idCount ++; //increment id for each string added
         StringInterval newString = new StringInterval(); //creating object for StringInterval
 
         newString.StringInter(start, idCount, stringInput.length()); //using constructor to give values to object
-
+        //TODO
+        //WRITE DEFRAGMENT FUNCTION WHICH REMOVES GAPS IN LINKEDLIST
         for (int i = start; i < memoryArray.length; i++) {
             memoryArray[i] = stringInput.charAt(i - start);
         }
@@ -44,9 +61,9 @@ public class Memory {
         start = start + stringInput.length(); //incrementing start for next object;
 
         intervalList.add(newString);
-
-
-        // if statement with defragment
+        return idCount;
+        //TODO
+        //add return statement for if the function failed to store
 
     }
 
@@ -64,6 +81,15 @@ public class Memory {
             this.length = length;
         //hello
             //testingTESTING
+        }
+        public int get_Id() {
+            return id;
+        }
+        public int get_start() {
+            return start;
+        }
+        public int get_length() {
+            return length;
         }
 
     }
