@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.LinkedList;
 
 public class Memory {
@@ -40,7 +41,6 @@ public class Memory {
         int id = 0;
         int index = 0;
         int counter = 0;
-
         char[] sChar = new char[s.length()];
 
         //convert string to character array
@@ -49,7 +49,7 @@ public class Memory {
         }
 
         int last = memoryArray.length - sChar.length;
-
+        //checks if sChar is contained in memoryArray
         for (int i = 0; i < last; i ++) {
             if (memoryArray[i] == sChar[0]) {
                 for (int j = 0; j < sChar.length; j ++) {
@@ -61,17 +61,6 @@ public class Memory {
                     }
                 }
             }
-//            for (int j = 0; j < sChar.length; j ++) {
-//                if (sChar[j] == memoryArray[i]) {
-//                    counter ++;
-//                }
-//                if (counter == sChar.length) {
-//                    index = i;
-//                    break;
-//                }
-//                else id = -1;
-//
-//            }
         }
         for (StringInterval A: intervalList) {
             if (A.get_start() == index) {
@@ -81,16 +70,26 @@ public class Memory {
         }
         return -1;
     }
+    //TODO
+    //not sure if completed, feels like it needs something extra for the string that is "remove" from character array
+    public String removeWithId(int id) {
+        String WORD;
+        //finding object to remove
+        for (StringInterval A: intervalList){
+            if (id == A.get_Id()) {
+                intervalList.remove(id -1);
+                WORD = getString(id);
+                return WORD;
+            }
+        }
+        return null;
+    }
     /*
     public getLength(int length) {
 
     }
 
-    public removeId(int id) {
-
-    }
-
-    public removeString(String s) {
+    public removeWithString(String s) {
 
     }
     */
