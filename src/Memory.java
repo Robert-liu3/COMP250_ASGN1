@@ -15,7 +15,7 @@ public class Memory {
         //start = 0;
     }
 
-    public String getString(int id) { //get(String)
+    public String get(int id) { //get the string with the id
         //initialize variables
         String WORD = null;
         char[] arr;
@@ -37,7 +37,7 @@ public class Memory {
         return WORD;
     }
 
-    public int getId(String s) {
+    public int get(String s) { //get the id with the string
         int id = 0;
         int index = 0;
         int counter = 0;
@@ -57,42 +57,44 @@ public class Memory {
                         counter++;
                         if (counter == sChar.length) {
                             index = i;
+                            break;
                         }
                     }
                 }
             }
+            if (counter == sChar.length) break;
         }
         for (StringInterval A: intervalList) {
             if (A.get_start() == index) {
-                id = A.get_Id();
-                return id;
+                if (A.get_length() == counter) {
+                    id = A.get_Id();
+                    return id;
+                }
             }
         }
         return -1;
     }
     //TODO
     //not sure if completed, feels like it needs something extra for the string that is "remove" from character array
-    public String removeWithId(int id) {
+    public String remove(int id) { //remove object with id
         String WORD;
         //finding object to remove
         for (StringInterval A: intervalList){
             if (id == A.get_Id()) {
                 intervalList.remove(id -1);
-                WORD = getString(id);
+                WORD = get(id);
                 return WORD;
             }
         }
         return null;
     }
-    /*
-    public getLength(int length) {
-
+    public int remove(String s) { //remove object with string
+        int id = get(s);
+        String WORD = remove(id);
+        if (WORD == null) return -1;
+        else return id;
     }
 
-    public removeWithString(String s) {
-
-    }
-    */
     public int put(String stringInput) {
         idCount ++; //increment id for each string added
         StringInterval newString = new StringInterval(); //creating object for StringInterval

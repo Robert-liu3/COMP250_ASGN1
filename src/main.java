@@ -8,10 +8,11 @@ public class main {
         memory.put("Hello");
         memory.put("goodbye");
         //System.out.println("put method works");
-        memory.removeWithId(2);
-        String print = memory.getString(1);
+        //memory.remove(2);
+        memory.remove("Hello");
+        String print = memory.get(1);
 
-        int printNum = memory.getId("Hello");
+        int printNum = memory.get("Hello");
         System.out.println(print + printNum);
     }
 }
