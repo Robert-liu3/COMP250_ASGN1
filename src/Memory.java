@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.LinkedList;
 
 public class Memory {
     LinkedList<StringInterval> intervalList = new LinkedList<StringInterval>();
@@ -29,14 +29,57 @@ public class Memory {
                     arr[i] = memoryArray[i + A.get_start()];
                 }
                 WORD = String.valueOf(arr);
-            }
+                break;
+            } else WORD = null;
 
         }
         return WORD;
     }
 
     public int getId(String s) {
+        int id = 0;
+        int index = 0;
+        int counter = 0;
 
+        char[] sChar = new char[s.length()];
+
+        //convert string to character array
+        for (int i = 0; i < s.length(); i++) {
+            sChar[i] = s.charAt(i);
+        }
+
+        int last = memoryArray.length - sChar.length;
+
+        for (int i = 0; i < last; i ++) {
+            if (memoryArray[i] == sChar[0]) {
+                for (int j = 0; j < sChar.length; j ++) {
+                    if (sChar[j] == memoryArray[i + j]) {
+                        counter++;
+                        if (counter == sChar.length) {
+                            index = i;
+                        }
+                    }
+                }
+            }
+//            for (int j = 0; j < sChar.length; j ++) {
+//                if (sChar[j] == memoryArray[i]) {
+//                    counter ++;
+//                }
+//                if (counter == sChar.length) {
+//                    index = i;
+//                    break;
+//                }
+//                else id = -1;
+//
+//            }
+        }
+        for (StringInterval A: intervalList) {
+            if (A.get_start() == index) {
+                id = A.get_Id();
+                return id;
+            }
+        }
+        return -1;
     }
     /*
     public getLength(int length) {

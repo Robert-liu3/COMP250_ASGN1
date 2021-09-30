@@ -9,6 +9,7 @@ public class main {
         memory.put("goodbye");
         //System.out.println("put method works");
         String print = memory.getString(2);
-        System.out.println(print);
+        int printNum = memory.getId("goodbye");
+        System.out.println(print + printNum);
     }
 }
