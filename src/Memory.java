@@ -21,7 +21,7 @@ public class Memory {
 
         //Iteration through linked list to find the id
         for (StringInterval A: intervalList) {
-            int a = A.get_Id();
+            //int a = A.get_Id(); testing variable
             //verify id number and store string into WORD
             if (A.get_Id() == id) {
                 arr = new char[A.get_length()];
