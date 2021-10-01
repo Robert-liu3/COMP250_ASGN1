@@ -5,6 +5,7 @@ public class Memory {
     LinkedList<StringInterval> intervalList = new LinkedList<StringInterval>();
     char[] memoryArray;
     static int idCount = 0;
+    int[] emptyIndex;
     int start = 0;
 
     //Sets length of the character array
@@ -13,6 +14,12 @@ public class Memory {
         memoryArray = new char[length];
         idCount = 0;
         //start = 0;
+    }
+
+    public void addEmptyIndex(int firstNum, int lastNum) {
+        for (int i = firstNum, j = 0; i <= lastNum; i ++, j++) {
+            emptyIndex[j] = i;
+        }
     }
 
     public String get(int id) { //get the string with the id
@@ -102,6 +109,7 @@ public class Memory {
         newString.StringInter(idCount, start, stringInput.length()); //using constructor to give values to object
         //TODO
         //WRITE DEFRAGMENT FUNCTION WHICH REMOVES GAPS IN LINKEDLIST
+
         for (int i = start; i < memoryArray.length; i++) {
             if (i >= stringInput.length() + start) {
                 break;
