@@ -43,7 +43,16 @@ public class Memory {
         }
         return WORD;
     }
+    public void incrementDown(int id) { //takes the value of the id AFTER the id of the object that's been deleted
+        //int num = 0;
+        for (StringInterval A: intervalList) {
+            if (A.get_Id() >= id) {
+                A.set_Id(A.get_Id() - 1);
+               // num = A.get_Id();
+            }
+        }
 
+    }
     public int get(String s) { //get the id with the string
         int id = 0;
         int index = 0;
@@ -58,6 +67,7 @@ public class Memory {
         int last = memoryArray.length - sChar.length;
         //checks if sChar is contained in memoryArray
         for (int i = 0; i < last; i ++) {
+            counter = 0;
             if (memoryArray[i] == sChar[0]) {
                 for (int j = 0; j < sChar.length; j ++) {
                     if (sChar[j] == memoryArray[i + j]) {
@@ -90,6 +100,7 @@ public class Memory {
             if (id == A.get_Id()) {
                 intervalList.remove(id -1);
                 WORD = get(id);
+                incrementDown(id+1);
                 return WORD;
             }
         }
@@ -103,9 +114,14 @@ public class Memory {
     }
 
     public int put(String stringInput) {
+        //check if there are missing objects in the
+        for (StringInterval A: intervalList) {
+            if (A.get_Id() == 1 && ) {
+
+            }
+        }
         idCount ++; //increment id for each string added
         StringInterval newString = new StringInterval(); //creating object for StringInterval
-
         newString.StringInter(idCount, start, stringInput.length()); //using constructor to give values to object
         //TODO
         //WRITE DEFRAGMENT FUNCTION WHICH REMOVES GAPS IN LINKEDLIST
@@ -142,6 +158,9 @@ public class Memory {
         //helper methods
         public int get_Id() {
             return id;
+        }
+        public void set_Id(int NewId) {
+            this.id = NewId;
         }
         public int get_start() {
             return start;
