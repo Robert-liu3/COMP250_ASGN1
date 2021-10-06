@@ -5,8 +5,8 @@ public class Memory {
     LinkedList<StringInterval> intervalList = new LinkedList<StringInterval>();
     char[] memoryArray;
     static int idCount = 0;
-    int[] emptyIndex;
-    int start = 0;
+   // int[] emptyIndex;
+    //int start = 0;
     boolean[] isGarbage;
 
     //Sets length of the character array
@@ -15,14 +15,17 @@ public class Memory {
         memoryArray = new char[length];
         isGarbage =  new boolean[length];
         idCount = 0;
+        for (int i = 0; i < isGarbage.length; i++) {
+            isGarbage[i] = true;
+        }
         //start = 0;
     }
 
-    public void addEmptyIndex(int firstNum, int lastNum) {
-        for (int i = firstNum, j = 0; i <= lastNum; i ++, j++) {
-            emptyIndex[j] = i;
-        }
-    }
+//    public void addEmptyIndex(int firstNum, int lastNum) {
+//        for (int i = firstNum, j = 0; i <= lastNum; i ++, j++) {
+//            emptyIndex[j] = i;
+//        }
+//    }
 
     public String get(int id) { //get the string with the id
         //initialize variables
@@ -45,16 +48,7 @@ public class Memory {
         }
         return WORD;
     }
-    public void incrementDown(int id) { //takes the value of the id AFTER the id of the object that's been deleted
-        //int num = 0;
-        for (StringInterval A: intervalList) {
-            if (A.get_Id() >= id) {
-                A.set_Id(A.get_Id() - 1);
-               // num = A.get_Id();
-            }
-        }
 
-    }
     public int get(String s) { //get the id with the string
         int id = 0;
         int index = 0;
@@ -93,15 +87,88 @@ public class Memory {
         }
         return -1;
     }
-    public void setGarbageTrue(String s) {
+
+
+    //TODO
+    //not sure if completed, feels like it needs something extra for the string that is "remove" from character array
+    public String remove(int id) { //remove object with id
+        String WORD;
+        //finding object to remove
+        for (StringInterval A: intervalList){
+            if (id == A.get_Id()) {
+                WORD = get(id);
+                intervalList.remove(id -1);
+                setGarbageTrue(WORD);
+                return WORD;
+            }
+        }
+        return null;
+    }
+    public int remove(String s) { //remove object with string
+        int id = get(s);
+        String WORD = remove(id);
+        if (WORD == null) return -1;
+        else return id;
+    }
+
+    public int put(String stringInput) {
+        //check if there are missing objects in the
+        int start = 0;
+        int lengthOfEmpty = 0;
+        boolean foundGap = false;
+        for (int i = 0; i < memoryArray.length; i++) {
+            if (i+1 >= memoryArray.length) break;
+            if (isGarbage[i] == true) {
+                lengthOfEmpty ++;
+                if (lengthOfEmpty == stringInput.length()) {
+                    foundGap = true;
+                    start = i - lengthOfEmpty + 1;
+                    break;
+                } else if (isGarbage[i+1] == false){
+                    lengthOfEmpty = 0;
+                    defragment();
+                }
+            }
+        }
+        if (foundGap == false) {
+            return -1;
+        } else if (foundGap == true) {
+            idCount ++; //increment idCount
+            StringInterval newString = new StringInterval(); //creating object for StringInterval
+            newString.StringInter(idCount, start, stringInput.length()); //using constructor to give values to object
+            for (int i = start; i < memoryArray.length; i++) {
+                if (i >= stringInput.length() + start) {
+                    break;
+                }
+                memoryArray[i] = stringInput.charAt(i - start);
+                isGarbage[i] = false;
+            }
+            intervalList.add(newString);
+            return idCount;
+        }
+        return -1;
+    }
+
+    public void defragment() {
+        for (int i = 0; i < memoryArray.length; i++) {
+            if (i == (memoryArray.length -1) ) break;
+            if (isGarbage[i] = true) {
+                memoryArray[i] = memoryArray[i+1];
+            }
+        }
+    }
+
+    //ALL NEW FUNCTIONS
+
+    public void setGarbageTrue(String WORD) {
         int counter;
         int index = 0;
-        int lastNum = s.length() - 1;
+        int lengthWORD = WORD.length();
 
-        char[] sChar = new char[s.length()];
+        char[] sChar = new char[WORD.length()];
 
-        for (int i = 0; i < s.length(); i++) {
-            sChar[i] = s.charAt(i);
+        for (int i = 0; i < WORD.length(); i++) {
+            sChar[i] = WORD.charAt(i);
         }
 
         int last = memoryArray.length - sChar.length;
@@ -120,60 +187,50 @@ public class Memory {
             }
             if (counter == sChar.length) break;
         }
-        for (int i = index; i < index+lastNum; i++ ) {
+        for (int i = index; i < lengthWORD; i++ ) {
             isGarbage[i] = true;
         }
     }
+    public void setGarbageFalse(String WORD) {
+        int counter;
+        int index = 0;
+        int lengthWORD = WORD.length();
 
-    //TODO
-    //not sure if completed, feels like it needs something extra for the string that is "remove" from character array
-    public String remove(int id) { //remove object with id
-        String WORD;
-        //finding object to remove
-        for (StringInterval A: intervalList){
-            if (id == A.get_Id()) {
-                intervalList.remove(id -1);
-                WORD = get(id);
-                incrementDown(id+1);
-                return WORD;
-            }
-        }
-        return null;
-    }
-    public int remove(String s) { //remove object with string
-        int id = get(s);
-        String WORD = remove(id);
-        if (WORD == null) return -1;
-        else return id;
-    }
+        char[] sChar = new char[WORD.length()];
 
-    public int put(String stringInput) {
-        //check if there are missing objects in the
-
-        idCount ++; //increment id for each string added
-        StringInterval newString = new StringInterval(); //creating object for StringInterval
-        newString.StringInter(idCount, start, stringInput.length()); //using constructor to give values to object
-        //TODO
-        //WRITE DEFRAGMENT FUNCTION WHICH REMOVES GAPS IN LINKEDLIST
-
-        for (int i = start; i < memoryArray.length; i++) {
-            if (i >= stringInput.length() + start) {
-                break;
-            }
-            memoryArray[i] = stringInput.charAt(i - start);
+        for (int i = 0; i < WORD.length(); i++) {
+            sChar[i] = WORD.charAt(i);
         }
 
-        start = start + stringInput.length(); //incrementing start for next object;
-
-        intervalList.add(newString);
-        return idCount;
-        //TODO
-        //add return statement for if the function failed to store
-
+        int last = memoryArray.length - sChar.length;
+        for (int i = 0; i < last; i ++) {
+            counter = 0;
+            if (memoryArray[i] == sChar[0]) {
+                for (int j = 0; j < sChar.length; j ++) {
+                    if (sChar[j] == memoryArray[i + j]) {
+                        counter++;
+                        if (counter == sChar.length) {
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (counter == sChar.length) break;
+        }
+        for (int i = index; i < lengthWORD; i++ ) {
+            isGarbage[i] = false;
+        }
     }
-
-    //public void defragment() {}
-
+//    public void incrementUp(int id) { //takes the value of the id AFTER the id of the object that's been added
+//        //int num = 0;
+//        for (StringInterval A: intervalList) {
+//            if (A.get_Id() >= id) {
+//                A.set_Id(A.get_Id() + 1);
+//                // num = A.get_Id();
+//            }
+//        }
+//    }
 
 
     public class StringInterval{

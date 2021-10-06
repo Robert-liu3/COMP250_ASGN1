@@ -12,6 +12,7 @@ public class main {
         //System.out.println("put method works");
         //memory.remove(2);
         memory.remove("Hello");
+        memory.put("bitch");
         String print = memory.get(1);
 
         int printNum = memory.get("cya");
