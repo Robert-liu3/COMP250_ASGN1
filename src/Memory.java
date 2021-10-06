@@ -134,7 +134,7 @@ public class Memory {
         } else if (foundGap == true) {
             idCount ++; //increment idCount
             StringInterval newString = new StringInterval(); //creating object for StringInterval
-            newString.StringInter(idCount, start, stringInput.length()); //using constructor to give values to object
+            newString.StringInterval(idCount, start, stringInput.length()); //using constructor to give values to object
             for (int i = start; i < memoryArray.length; i++) {
                 if (i >= stringInput.length() + start) {
                     break;
@@ -236,7 +236,7 @@ public class Memory {
         int id; // unique identifier for the string
         int start; //index in memory holding the first character of the string
         int length; //number of characters in the string
-        public void StringInter(int id, int start, int length) {
+        public void StringInterval(int id, int start, int length) {
             this.id = id;
             this.start = start;
             this.length = length;
