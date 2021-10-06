@@ -96,7 +96,7 @@ public class Memory {
         for (StringInterval A: intervalList){
             if (id == A.get_Id()) {
                 WORD = get(id);
-                intervalList.remove(id -1);
+                intervalList.remove(id);
                 setGarbageTrue(WORD);
                 return WORD;
             }
@@ -115,8 +115,8 @@ public class Memory {
         int start = 0;
         int lengthOfEmpty = 0;
         boolean foundGap = false;
-        for (int i = 0; i < memoryArray.length; i++) {
-            if (i+1 >= memoryArray.length) break;
+        for (int i = 0; i < memoryArray.length-1; i++) {
+            //if (i == memoryArray.length-2 && isGarbage[i+1]==true) lengthOfEmpty ++;
             if (isGarbage[i] == true) {
                 lengthOfEmpty ++;
                 if (lengthOfEmpty == stringInput.length()) {
@@ -132,9 +132,9 @@ public class Memory {
         if (foundGap == false) {
             return -1;
         } else if (foundGap == true) {
+            StringInterval newString = new StringInterval(idCount, start, stringInput.length()); //creating object for StringInterval
+            //newString =  StringInterval(idCount, start, stringInput.length()); //using constructor to give values to object
             idCount ++; //increment idCount
-            StringInterval newString = new StringInterval(); //creating object for StringInterval
-            newString.StringInterval(idCount, start, stringInput.length()); //using constructor to give values to object
             for (int i = start; i < memoryArray.length; i++) {
                 if (i >= stringInput.length() + start) {
                     break;
@@ -149,10 +149,29 @@ public class Memory {
     }
 
     public void defragment() {
-        for (int i = 0; i < memoryArray.length; i++) {
-            if (i == (memoryArray.length -1) ) break;
-            if (isGarbage[i] = true) {
-                memoryArray[i] = memoryArray[i+1];
+        int lengthOfGap = 0;
+        int index = 0;
+        for (int i = 0; i < memoryArray.length -1; i++) {
+            if (isGarbage[i] == true) {
+                lengthOfGap ++;
+                if (isGarbage[i + 1] == false) {
+                    index = i - lengthOfGap + 1;
+                    break;
+                }
+            }
+        }
+        for (int j = 0; j < lengthOfGap; j++) {
+            for (int i = 0; i < memoryArray.length-1; i++) {
+//                if (i == (memoryArray.length - 2)) {
+//                    if (isGarbage[i+1] == true) {
+//                        memoryArray[i] = memoryArray[i + 1];
+//                        isGarbage[i] = isGarbage[i+1];
+//                        isGarbage[i+1] = true;
+//                        break;
+//                    }
+//                }
+                memoryArray[i] = memoryArray[i + 1];
+                isGarbage[i] = isGarbage[i+1];
             }
         }
     }
@@ -186,7 +205,7 @@ public class Memory {
             }
             if (counter == sChar.length) break;
         }
-        for (int i = index; i < lengthWORD; i++ ) {
+        for (int i = index; i < lengthWORD + index; i++ ) {
             isGarbage[i] = true;
         }
     }
@@ -217,7 +236,7 @@ public class Memory {
             }
             if (counter == sChar.length) break;
         }
-        for (int i = index; i < lengthWORD; i++ ) {
+        for (int i = index; i < lengthWORD + index; i++ ) {
             isGarbage[i] = false;
         }
     }
@@ -236,7 +255,7 @@ public class Memory {
         int id; // unique identifier for the string
         int start; //index in memory holding the first character of the string
         int length; //number of characters in the string
-        public void StringInterval(int id, int start, int length) {
+        StringInterval(int id, int start, int length) {
             this.id = id;
             this.start = start;
             this.length = length;

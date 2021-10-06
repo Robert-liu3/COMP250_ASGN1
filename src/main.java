@@ -9,11 +9,11 @@ public class main {
         memory.put("ohboy");
         //System.out.println("put method works");
         //memory.remove(2);
-        memory.remove("Hello");
-        memory.put("bitch");
-        String print = memory.get(1);
+        memory.remove(1);
+        memory.put("winibigbutt");
+        String print = memory.get(4);
 
         int printNum = memory.get("cya");
-        System.out.println(printNum);
+        System.out.println(print);
     }
 }
