@@ -7,11 +7,13 @@ public class Memory {
     static int idCount = 0;
     int[] emptyIndex;
     int start = 0;
+    boolean[] isGarbage;
 
     //Sets length of the character array
     //DONE
     public Memory(int length) {
         memoryArray = new char[length];
+        isGarbage =  new boolean[length];
         idCount = 0;
         //start = 0;
     }
@@ -91,6 +93,38 @@ public class Memory {
         }
         return -1;
     }
+    public void setGarbageTrue(String s) {
+        int counter;
+        int index = 0;
+        int lastNum = s.length() - 1;
+
+        char[] sChar = new char[s.length()];
+
+        for (int i = 0; i < s.length(); i++) {
+            sChar[i] = s.charAt(i);
+        }
+
+        int last = memoryArray.length - sChar.length;
+        for (int i = 0; i < last; i ++) {
+            counter = 0;
+            if (memoryArray[i] == sChar[0]) {
+                for (int j = 0; j < sChar.length; j ++) {
+                    if (sChar[j] == memoryArray[i + j]) {
+                        counter++;
+                        if (counter == sChar.length) {
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (counter == sChar.length) break;
+        }
+        for (int i = index; i < index+lastNum; i++ ) {
+            isGarbage[i] = true;
+        }
+    }
+
     //TODO
     //not sure if completed, feels like it needs something extra for the string that is "remove" from character array
     public String remove(int id) { //remove object with id
@@ -115,11 +149,7 @@ public class Memory {
 
     public int put(String stringInput) {
         //check if there are missing objects in the
-        for (StringInterval A: intervalList) {
-            if (A.get_Id() == 1 && ) {
 
-            }
-        }
         idCount ++; //increment id for each string added
         StringInterval newString = new StringInterval(); //creating object for StringInterval
         newString.StringInter(idCount, start, stringInput.length()); //using constructor to give values to object
