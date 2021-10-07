@@ -61,7 +61,7 @@ public class Memory {
 
         int last = memoryArray.length - sChar.length;
         //checks if sChar is contained in memoryArray
-        for (int i = 0; i < last; i ++) {
+        for (int i = 0; i < memoryArray.length; i ++) {
             counter = 0;
             if (memoryArray[i] == sChar[0]) {
                 for (int j = 0; j < sChar.length; j ++) {
@@ -92,14 +92,16 @@ public class Memory {
     //not sure if completed, feels like it needs something extra for the string that is "remove" from character array
     public String remove(int id) { //remove object with id
         String WORD;
+        int index = 0;
         //finding object to remove
         for (StringInterval A: intervalList){
             if (id == A.get_Id()) {
                 WORD = get(id);
-                intervalList.remove(id);
+                intervalList.remove(index);
                 setGarbageTrue(WORD);
                 return WORD;
             }
+            index ++;
         }
         return null;
     }
@@ -114,26 +116,29 @@ public class Memory {
         //check if there are missing objects in the
         int start = 0;
         int lengthOfEmpty = 0;
+        int freeSpaceCounter = 0;
         boolean foundGap = false;
-        for (int i = 0; i < memoryArray.length-1; i++) {
+        for (int i = 0; i < memoryArray.length; i++) {
             //if (i == memoryArray.length-2 && isGarbage[i+1]==true) lengthOfEmpty ++;
-            if (isGarbage[i] == true) {
+            if (isGarbage[i]) {
                 lengthOfEmpty ++;
+                freeSpaceCounter ++;
                 if (lengthOfEmpty == stringInput.length()) {
                     foundGap = true;
                     start = i - lengthOfEmpty + 1;
                     break;
-                } else if (isGarbage[i+1] == false){
-                    lengthOfEmpty = 0;
-                    defragment();
                 }
+            } else {
+                lengthOfEmpty = 0;
             }
         }
-        if (foundGap == false) {
-            return -1;
-        } else if (foundGap == true) {
+        if (freeSpaceCounter >= stringInput.length() && !foundGap) {
+            this.defragment();
+            start = memoryArray.length - freeSpaceCounter;
+            foundGap = true;
+        }
+        if (foundGap) {
             StringInterval newString = new StringInterval(idCount, start, stringInput.length()); //creating object for StringInterval
-            //newString =  StringInterval(idCount, start, stringInput.length()); //using constructor to give values to object
             idCount ++; //increment idCount
             for (int i = start; i < memoryArray.length; i++) {
                 if (i >= stringInput.length() + start) {
@@ -151,27 +156,24 @@ public class Memory {
     public void defragment() {
         int lengthOfGap = 0;
         int index = 0;
-        for (int i = 0; i < memoryArray.length -1; i++) {
-            if (isGarbage[i] == true) {
+        int start = 0;
+        boolean foundGap = false ;
+        for (int i = 0; i < memoryArray.length; i++) {
+            if (isGarbage[i]) {
                 lengthOfGap ++;
-                if (isGarbage[i + 1] == false) {
-                    index = i - lengthOfGap + 1;
-                    break;
+                foundGap = true;
                 }
-            }
-        }
-        for (int j = 0; j < lengthOfGap; j++) {
-            for (int i = 0; i < memoryArray.length-1; i++) {
-//                if (i == (memoryArray.length - 2)) {
-//                    if (isGarbage[i+1] == true) {
-//                        memoryArray[i] = memoryArray[i + 1];
-//                        isGarbage[i] = isGarbage[i+1];
-//                        isGarbage[i+1] = true;
-//                        break;
-//                    }
-//                }
-                memoryArray[i] = memoryArray[i + 1];
-                isGarbage[i] = isGarbage[i+1];
+            else if (!isGarbage[i] && foundGap) {
+                for (int k = i; k < memoryArray.length; k++) {
+                    memoryArray[k - lengthOfGap] = memoryArray[k];
+                    isGarbage[k - lengthOfGap] = isGarbage[k];
+                        // false false
+                }
+                for (int k = memoryArray.length - lengthOfGap - 1; k < memoryArray.length; k ++) {
+                    isGarbage[k] = true;
+                }
+                this.defragment();
+                return;
             }
         }
     }
@@ -190,7 +192,7 @@ public class Memory {
         }
 
         int last = memoryArray.length - sChar.length;
-        for (int i = 0; i < last; i ++) {
+        for (int i = 0; i < memoryArray.length; i ++) {
             counter = 0;
             if (memoryArray[i] == sChar[0]) {
                 for (int j = 0; j < sChar.length; j ++) {
@@ -221,7 +223,7 @@ public class Memory {
         }
 
         int last = memoryArray.length - sChar.length;
-        for (int i = 0; i < last; i ++) {
+        for (int i = 0; i < memoryArray.length; i ++) {
             counter = 0;
             if (memoryArray[i] == sChar[0]) {
                 for (int j = 0; j < sChar.length; j ++) {
