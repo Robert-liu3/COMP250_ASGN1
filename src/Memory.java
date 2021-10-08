@@ -39,52 +39,13 @@ public class Memory {
         return WORD;
     }
 
-    public int get(String s) { //get the id with the string
-        int id = 0;
-        int index = 0;
-        int counter = 0;
-        char[] sChar = new char[s.length()];
-
-        //convert string to character array
-        for (int i = 0; i < s.length(); i++) {
-            sChar[i] = s.charAt(i);
-        }
-
-        int last = memoryArray.length - sChar.length;
-        //checks if sChar is contained in memoryArray
-        for (int i = 0; i < memoryArray.length; i ++) {
-            counter = 0;
-            if (memoryArray[i] == sChar[0]) {
-                for (int j = 0; j < sChar.length; j ++) {
-                    if (sChar[j] == memoryArray[i + j]) {
-                        counter++;
-                        if (counter == sChar.length) {
-                            index = i;
-                            for (StringInterval A: intervalList) {
-                                if (A.get_start() == index) {
-                                    if (A.get_length() == counter) {
-                                        id = A.get_Id();
-                                        return id;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+    public int get(String s) {
+        for (StringInterval A: intervalList) {
+            if (s.equals(this.get(A.get_Id()))) {
+                return A.get_Id();
             }
-            //if (counter == sChar.length) break;
-        }
-//        for (StringInterval A: intervalList) {
-//            if (A.get_start() == index) {
-//                if (A.get_length() == counter) {
-//                    id = A.get_Id();
-//                    return id;
-//                }
-//            }
-//        }
-        return -1;
+        } return -1;
     }
-
 
 
     public String remove(int id) { //remove object with id
@@ -94,8 +55,8 @@ public class Memory {
         for (StringInterval A: intervalList){
             if (id == A.get_Id()) {
                 WORD = get(id);
-                intervalList.remove(index);
                 setGarbageTrue(WORD);
+                intervalList.remove(index);
                 return WORD;
             }
             index ++;
@@ -160,12 +121,17 @@ public class Memory {
                 lengthOfGap ++;
                 foundGap = true;
                 }
-            else if (!isGarbage[i] && foundGap) {
+            else if (foundGap) {
                 for (int k = i, j = 0; k < memoryArray.length; k++, j++) {
                     memoryArray[k - lengthOfGap] = memoryArray[k];
                     isGarbage[k - lengthOfGap] = isGarbage[k];
                     //if ()
                         // false false
+                }
+                for (StringInterval A: intervalList) {
+                    if (A.get_start() >= i) {
+                        A.set_start(A.get_start() - lengthOfGap);
+                    }
                 }
                 for (int k = memoryArray.length - lengthOfGap - 1; k < memoryArray.length; k ++) {
                     isGarbage[k] = true;
@@ -177,42 +143,9 @@ public class Memory {
     }
 
     //ALL NEW FUNCTIONS
-/*
-    public void setGarbageTrue(String WORD) {
-        int counter;
-        int index = 0;
-        int lengthWORD = WORD.length();
 
-        char[] sChar = new char[WORD.length()];
 
-        for (int i = 0; i < WORD.length(); i++) {
-            sChar[i] = WORD.charAt(i);
-        }
 
-        int last = memoryArray.length - sChar.length;
-        for (int i = 0; i < memoryArray.length; i ++) {
-            counter = 0;
-            if (memoryArray[i] == sChar[0]) {
-                for (int j = 0; j < sChar.length; j ++) {
-                    if (sChar[j] == memoryArray[i + j]) {
-                        counter++;
-                        if (counter == sChar.length) {
-                            index = i;
-//                            for (int k = index; k < lengthWORD + index; k++ ) {
-//                                isGarbage[k] = true;
-//                            }
-                        }
-                    }
-                }
-            }
-            if (counter == sChar.length) break;
-        }
-        for (int i = index; i < lengthWORD + index; i++ ) {
-            isGarbage[i] = true;
-        }
-    }
-
- */
     public void setGarbageTrue(String WORD){
         int id = get(WORD);
         int start = 0;
@@ -225,6 +158,8 @@ public class Memory {
             }
         }
     }
+
+
     public void setGarbageFalse(String WORD) {
         int counter;
         int index = 0;
@@ -276,6 +211,9 @@ public class Memory {
         }
         public int get_start() {
             return start;
+        }
+        public void set_start(int NewStart) {
+            this.start = NewStart;
         }
         public int get_length() {
             return length;
