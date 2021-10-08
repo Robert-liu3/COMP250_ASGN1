@@ -60,21 +60,28 @@ public class Memory {
                         counter++;
                         if (counter == sChar.length) {
                             index = i;
-                            break;
+                            for (StringInterval A: intervalList) {
+                                if (A.get_start() == index) {
+                                    if (A.get_length() == counter) {
+                                        id = A.get_Id();
+                                        return id;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-            if (counter == sChar.length) break;
+            //if (counter == sChar.length) break;
         }
-        for (StringInterval A: intervalList) {
-            if (A.get_start() == index) {
-                if (A.get_length() == counter) {
-                    id = A.get_Id();
-                    return id;
-                }
-            }
-        }
+//        for (StringInterval A: intervalList) {
+//            if (A.get_start() == index) {
+//                if (A.get_length() == counter) {
+//                    id = A.get_Id();
+//                    return id;
+//                }
+//            }
+//        }
         return -1;
     }
 
@@ -154,9 +161,10 @@ public class Memory {
                 foundGap = true;
                 }
             else if (!isGarbage[i] && foundGap) {
-                for (int k = i; k < memoryArray.length; k++) {
+                for (int k = i, j = 0; k < memoryArray.length; k++, j++) {
                     memoryArray[k - lengthOfGap] = memoryArray[k];
                     isGarbage[k - lengthOfGap] = isGarbage[k];
+                    //if ()
                         // false false
                 }
                 for (int k = memoryArray.length - lengthOfGap - 1; k < memoryArray.length; k ++) {
@@ -169,7 +177,7 @@ public class Memory {
     }
 
     //ALL NEW FUNCTIONS
-
+/*
     public void setGarbageTrue(String WORD) {
         int counter;
         int index = 0;
@@ -190,7 +198,9 @@ public class Memory {
                         counter++;
                         if (counter == sChar.length) {
                             index = i;
-                            break;
+//                            for (int k = index; k < lengthWORD + index; k++ ) {
+//                                isGarbage[k] = true;
+//                            }
                         }
                     }
                 }
@@ -199,6 +209,20 @@ public class Memory {
         }
         for (int i = index; i < lengthWORD + index; i++ ) {
             isGarbage[i] = true;
+        }
+    }
+
+ */
+    public void setGarbageTrue(String WORD){
+        int id = get(WORD);
+        int start = 0;
+        for (StringInterval A: intervalList) {
+            if (A.get_Id() == id) {
+                start = A.get_start();
+                for (int i = start; i < start + A.get_length(); i++) {
+                    isGarbage[i] = true;
+                }
+            }
         }
     }
     public void setGarbageFalse(String WORD) {
