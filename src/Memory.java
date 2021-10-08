@@ -4,12 +4,9 @@ public class Memory {
     LinkedList<StringInterval> intervalList = new LinkedList<StringInterval>();
     char[] memoryArray;
     static int idCount = 0;
-   // int[] emptyIndex;
-    //int start = 0;
     boolean[] isGarbage;
 
     //Sets length of the character array
-    //DONE
     public Memory(int length) {
         memoryArray = new char[length];
         isGarbage =  new boolean[length];
@@ -19,12 +16,6 @@ public class Memory {
         }
         //start = 0;
     }
-
-//    public void addEmptyIndex(int firstNum, int lastNum) {
-//        for (int i = firstNum, j = 0; i <= lastNum; i ++, j++) {
-//            emptyIndex[j] = i;
-//        }
-//    }
 
     public String get(int id) { //get the string with the id
         //initialize variables
@@ -88,8 +79,7 @@ public class Memory {
     }
 
 
-    //TODO
-    //not sure if completed, feels like it needs something extra for the string that is "remove" from character array
+
     public String remove(int id) { //remove object with id
         String WORD;
         int index = 0;
@@ -148,7 +138,7 @@ public class Memory {
                 isGarbage[i] = false;
             }
             intervalList.add(newString);
-            return idCount;
+            return newString.get_Id();
         }
         return -1;
     }
@@ -242,15 +232,6 @@ public class Memory {
             isGarbage[i] = false;
         }
     }
-//    public void incrementUp(int id) { //takes the value of the id AFTER the id of the object that's been added
-//        //int num = 0;
-//        for (StringInterval A: intervalList) {
-//            if (A.get_Id() >= id) {
-//                A.set_Id(A.get_Id() + 1);
-//                // num = A.get_Id();
-//            }
-//        }
-//    }
 
 
     public class StringInterval{

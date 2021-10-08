@@ -1,13 +1,16 @@
 
 public class main {
     public static void main(String[] args) {
-        Memory memory = new Memory(24);
-       	memory.put("a");
-		   memory.put("a");
-		   String a = memory.get(1);
-		System.out.println(a);
+		Memory m = new Memory(15);
+		m.put("hello");
+		m.put("hell");
+		m.remove("hell");
+		m.put("what");
+		m.put("who");
+		m.put("ten");
+		m.remove("who");
+		m.put("ayo");
 
-        int printNum = memory.get("cya");
-        System.out.println(print);
+		System.out.println(m.get(5));
     }
 }
